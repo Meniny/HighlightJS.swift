@@ -4,6 +4,12 @@
 
 `HighlightJS.swift` is a code syntax highlight library using `Highlight.js`.
 
+Supports 169 languages and 80 themes.
+
+![preview](https://i.loli.net/2017/07/21/5971dd1e177bd.jpg)
+
+![preview](https://i.loli.net/2017/07/21/5971dd3cda847.jpg)
+
 ## Requirements
 
 * iOS 8.0+
