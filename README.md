@@ -2,7 +2,7 @@
 
 ## What's this?
 
-`HighlightJS.swift` is a code syntax highlight library using `Highlight.js`.
+`HighlightJS.swift` is a code syntax highlight library using [Highlight.js](https://highlightjs.org).
 
 Supports 169 languages and 80 themes.
 
