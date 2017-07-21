@@ -1,0 +1,8 @@
+
+platform :ios, '8.0'
+
+target 'Sample' do
+  use_frameworks!
+  pod 'ActionSheetPicker-3.0'
+  pod 'HighlightJS', :path => '../'
+end

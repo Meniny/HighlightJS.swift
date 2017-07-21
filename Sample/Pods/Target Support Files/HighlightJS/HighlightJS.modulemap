@@ -1,0 +1,6 @@
+framework module HighlightJS {
+  umbrella header "HighlightJS-umbrella.h"
+
+  export *
+  module * { export * }
+}

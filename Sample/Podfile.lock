@@ -1,0 +1,19 @@
+PODS:
+  - ActionSheetPicker-3.0 (2.2.0)
+  - HighlightJS (1.0.0)
+
+DEPENDENCIES:
+  - ActionSheetPicker-3.0
+  - HighlightJS (from `../`)
+
+EXTERNAL SOURCES:
+  HighlightJS:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: d11a4c12c6aaf704b8a3f56d179198c99f3e41e6
+  HighlightJS: fc379bb7de321760372fc4e4d49025c885418da4
+
+PODFILE CHECKSUM: c7a44ea0b222f4f56889a9c581e52cd1873d0cd5
+
+COCOAPODS: 1.2.1

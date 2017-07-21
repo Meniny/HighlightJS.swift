@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<title>Greetings</title>
+	</head>
+	<body>
+		<h1>Greetings</h1>
+		<br/>
+		<p>Hello, world!</p>
+	</body>
+</html>

@@ -1,0 +1,215 @@
+//
+//  SampleCode.swift
+//  HighlightJS
+//
+//  Created by Meniny on 5/5/16.
+//
+
+import UIKit
+import ActionSheetPicker_3_0
+import HighlightJS
+
+public enum EditorPickerSource: Int {
+    case theme = 0
+    case language
+}
+
+public enum CodeSource: String {
+    case HTML = "HTML.html"
+    case java = "Java.java"
+    case objC = "ObjC.m"
+    case swift = "Swift.swift"
+    case longSwift = "EditorViewController.swift"
+    
+    public var filename: String {
+        switch self {
+        case .HTML:
+            return "HTML.txt"
+        case .java:
+            return "Java.txt"
+        case .objC:
+            return "ObjC.txt"
+        case .longSwift:
+            return "EditorViewController.txt"
+        default:
+            return "Swift.txt"
+        }
+    }
+    
+    public var language: String {
+        switch self {
+        case .HTML:
+            return "HTML"
+        case .java:
+            return "Java"
+        case .objC:
+            return "ObjectiveC"
+        default:
+            return "Swift"
+        }
+    }
+    
+    public static var allRawValues: [String] {
+        return [
+            CodeSource.HTML.rawValue,
+            CodeSource.java.rawValue,
+            CodeSource.objC.rawValue,
+            CodeSource.swift.rawValue,
+            CodeSource.longSwift.rawValue
+        ]
+    }
+}
+
+class EditorViewController: UIViewController {
+
+    @IBOutlet weak var viewPlaceholder: UIView!
+    var textView : UITextView!
+    @IBOutlet var textToolbar: UIToolbar!
+    
+    var highlighter : HighlightJS!
+    let textStorage = HighlightJSAttributedString()
+    var languageName: String {
+        didSet {
+            self.refreshTitle()
+        }
+    }
+    var themeName: String = "Solarized-Light" {
+    //var themeName: String = "RailsCasts" {
+        didSet {
+            self.refreshTitle()
+        }
+    }
+    
+    func refreshTitle() {
+        self.title = languageName + "/" + themeName
+    }
+    
+    let source: CodeSource
+    
+    init(source s: CodeSource) {
+        source = s
+        languageName = source.language
+        super.init(nibName: "EditorViewController", bundle: Bundle.main)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        source = .HTML
+        languageName = source.language
+        super.init(coder: aDecoder)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        textStorage.language = languageName.lowercased()
+        let layoutManager = NSLayoutManager()
+        textStorage.addLayoutManager(layoutManager)
+        
+        let textContainer = NSTextContainer(size: CGSize.zero)
+        layoutManager.addTextContainer(textContainer)
+        
+        textView = UITextView(frame: viewPlaceholder.bounds, textContainer: textContainer)
+        textView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        textView.autocorrectionType = UITextAutocorrectionType.no
+        textView.autocapitalizationType = UITextAutocapitalizationType.none
+        textView.textColor = UIColor(white: 0.8, alpha: 1.0)
+        textView.inputAccessoryView = textToolbar
+        viewPlaceholder.addSubview(textView)
+        
+        let code = try! String.init(contentsOfFile: Bundle.main.path(forResource: source.filename, ofType: nil)!)
+        self.textView.text = code
+        
+        self.highlighter = textStorage.highlightJS
+        self.textStorage.language = self.languageName.lowercased()
+        self.textStorage.highlightJS.setTheme(to: self.themeName.lowercased())
+        self.refreshTitle()
+        self.updateColors()
+        
+        self.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "T", style: .done, target: self, action: #selector(pickTheme)),
+            UIBarButtonItem(title: "L", style: .done, target: self, action: #selector(pickLanguage))
+        ]
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
+    }
+    
+    func close() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func pickLanguage() {
+        let languages = self.highlighter.supportedLanguages()
+        let indexOrNil = languages.index(of: languageName.lowercased())
+        let index = (indexOrNil == nil) ? 0 : indexOrNil!
+        
+        ActionSheetStringPicker.show(withTitle: "Pick a Language",
+                                     rows: languages,
+                                     initialSelection: index,
+                                     doneBlock: { [weak self] (picker, index, value) in
+                let language = value! as! String
+                self?.textStorage.language = language
+                self?.languageName = language.capitalized
+        }, cancel: nil, origin: self.navigationItem.leftBarButtonItem)
+
+    }
+
+    func performanceTest() {
+        let code = textStorage.string
+//        activityIndicator.isHidden = false
+//        activityIndicator.startAnimating()
+
+        DispatchQueue.global(qos: .userInteractive).async {
+            let start = Date()
+            for _ in 0...100 {
+                self.highlighter.highlight(code, as: self.languageName)
+            }
+            let end = Date()
+            let time = Float(end.timeIntervalSince(start));
+            
+            let avg = String(format:"%0.4f", time/100)
+            let total = String(format:"%0.3f", time)
+            
+            let alert = UIAlertController(title: "Performance test", message: "This code was highlighted 100 times. \n It took an average of \(avg) seconds to process each time,\n with a total of \(total) seconds", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            alert.addAction(okAction)
+            
+            DispatchQueue.main.async(execute: {
+//                self.activityIndicator.isHidden = true
+//                self.activityIndicator.stopAnimating()
+                self.present(alert, animated: true, completion: nil)
+            })
+        }
+        
+    }
+    
+    func pickTheme() {
+        hideKeyboard(nil)
+        let themes = self.highlighter.availableThemes()
+        let indexOrNil = themes.index(of: themeName.lowercased())
+        let index = (indexOrNil == nil) ? 0 : indexOrNil!
+        
+        ActionSheetStringPicker.show(withTitle: "Pick a Theme",
+                                     rows: themes,
+                                     initialSelection: index,
+                                     doneBlock: { (picker, index, value) in
+                                        print(value!)
+                let theme = value! as! String
+                self.textStorage.highlightJS.setTheme(to: theme)
+                self.themeName = theme.capitalized
+                self.updateColors()
+        }, cancel: nil, origin: self.navigationItem.rightBarButtonItem)
+    }
+    
+    @IBAction func hideKeyboard(_ sender: AnyObject?) {
+        textView.resignFirstResponder()
+    }
+    
+    func updateColors() {
+        self.textView.backgroundColor = self.highlighter.theme.themeBackgroundColor
+    }
+    
+    func invertColor(_ color: UIColor) -> UIColor {
+        var r:CGFloat = 0, g:CGFloat = 0, b:CGFloat = 0
+        color.getRed(&r, green: &g, blue: &b, alpha: nil)
+        return UIColor(red:1.0-r, green: 1.0-g, blue: 1.0-b, alpha: 1)
+    }
+}

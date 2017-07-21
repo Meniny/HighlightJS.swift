@@ -1,0 +1,20 @@
+
+import UIKit
+import HighlightJS
+
+enum pickerSource : Int {
+  case theme = 0
+  case language
+}
+
+class EditorViewController: UIViewController {
+
+  var textView : UITextView!
+  @IBOutlet var textToolbar: UIToolbar!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // anything...
+  }
+}
