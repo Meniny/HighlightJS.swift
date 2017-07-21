@@ -1,8 +1,21 @@
 
 platform :ios, '8.0'
 
+def js()
+    use_frameworks!
+    pod 'HighlightJS', :path => '../'
+end
+
 target 'Sample' do
   use_frameworks!
   pod 'ActionSheetPicker-3.0'
-  pod 'HighlightJS', :path => '../'
+  js()
+end
+
+target 'macOS' do
+    js()
+end
+
+target 'tvOS' do
+    js()
 end

@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://meniny.cn/'
 
   s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.10'
+  s.osx.deployment_target = '10.11'
   s.tvos.deployment_target = '9.0'
 
   s.source_files = 'HighlightJS/Classes/**/*.swift'

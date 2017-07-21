@@ -9,9 +9,29 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>macOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>tvOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>5C36325B1F21F850001408C4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5C36326E1F21F85A001408C4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5C9EF1CC1F21DCFA0026D464</key>
 		<dict>
 			<key>primary</key>

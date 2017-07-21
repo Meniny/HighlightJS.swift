@@ -9,7 +9,7 @@ Checkout the sample project for more detail.
 ## Requirements
 
 * iOS 8.0+
-* macOS 10.10+
+* macOS 10.11+
 * tvOS 9.0+
 * Xcode 8 with Swift 3
 

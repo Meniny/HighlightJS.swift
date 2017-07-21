@@ -19,10 +19,30 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-macOS.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-tvOS.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>004D56F2427D17969B2CB9BDB1BCFDBC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>09A871892E13604B4D2C725D98326B80</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83E00B7D05F560E569F5BDD669FB7921</key>
 		<dict>
 			<key>primary</key>
 			<true/>
