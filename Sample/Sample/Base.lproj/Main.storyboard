@@ -32,11 +32,34 @@
                                     <action selector="showEditor:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xtQ-DO-b3k"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFS-q6-Cnu" customClass="HighlightView" customModule="HighlightJS">
+                                <rect key="frame" x="16" y="368" width="343" height="279"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="text">
+                                        <string key="value">@IBInspectable var themeName: String {
+        get {
+            return theme.rawValue
+        }
+        set {
+            if let t = HighlightJS.ThemeName(rawValue: newValue.lowercased()) {
+                theme = t
+            }
+        }
+    }</string>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="languageName" value="swift"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="oKC-e1-l8P" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RAW-rG-e6u"/>
+                            <constraint firstAttribute="trailing" secondItem="SFS-q6-Cnu" secondAttribute="trailing" constant="16" id="Y89-04-sWX"/>
+                            <constraint firstItem="SFS-q6-Cnu" firstAttribute="top" secondItem="oKC-e1-l8P" secondAttribute="bottom" constant="20" id="eE7-Nl-Ckh"/>
                             <constraint firstItem="oKC-e1-l8P" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="erd-av-M2L"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SFS-q6-Cnu" secondAttribute="bottom" constant="20" id="fdL-xt-exO"/>
+                            <constraint firstItem="SFS-q6-Cnu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="uqI-Ra-7wM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="HighlightJS" id="HGo-Zy-Wz2"/>

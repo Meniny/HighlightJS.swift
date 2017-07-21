@@ -8,6 +8,7 @@
 
 import UIKit
 import ActionSheetPicker_3_0
+import HighlightJS
 
 class ViewController: UIViewController {
 
@@ -15,6 +16,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let h = HighlightView(frame: view.bounds)
+        h.frame.origin.y = 64
+        h.frame.size.height = 64
+        view.addSubview(h)
+        h.language = .swift
+        h.theme = .arduinoLight
+        h.text = "func test() {}"
     }
     
     @IBOutlet weak var button: UIButton!

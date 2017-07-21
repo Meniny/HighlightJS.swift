@@ -20,7 +20,7 @@ public enum CodeSource: String {
     case objC = "ObjC.m"
     case swift = "Swift.swift"
     case longSwift = "EditorViewController.swift"
-    
+
     public var filename: String {
         switch self {
         case .HTML:
@@ -35,7 +35,7 @@ public enum CodeSource: String {
             return "Swift.txt"
         }
     }
-    
+
     public var language: String {
         switch self {
         case .HTML:
@@ -48,7 +48,7 @@ public enum CodeSource: String {
             return "Swift"
         }
     }
-    
+
     public static var allRawValues: [String] {
         return [
             CodeSource.HTML.rawValue,
@@ -65,7 +65,7 @@ class EditorViewController: UIViewController {
     @IBOutlet weak var viewPlaceholder: UIView!
     var textView : UITextView!
     @IBOutlet var textToolbar: UIToolbar!
-    
+
     var highlighter : HighlightJS!
     let textStorage = HighlightJSAttributedString()
     var languageName: String {
@@ -79,35 +79,34 @@ class EditorViewController: UIViewController {
             self.refreshTitle()
         }
     }
-    
+
     func refreshTitle() {
         self.title = languageName + "/" + themeName
     }
-    
+
     let source: CodeSource
-    
+
     init(source s: CodeSource) {
         source = s
         languageName = source.language
         super.init(nibName: "EditorViewController", bundle: Bundle.main)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         source = .HTML
         languageName = source.language
         super.init(coder: aDecoder)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        textStorage.language = languageName.lowercased()
+
         let layoutManager = NSLayoutManager()
         textStorage.addLayoutManager(layoutManager)
-        
+
         let textContainer = NSTextContainer(size: CGSize.zero)
         layoutManager.addTextContainer(textContainer)
-        
+
         textView = UITextView(frame: viewPlaceholder.bounds, textContainer: textContainer)
         textView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         textView.autocorrectionType = UITextAutocorrectionType.no
@@ -115,32 +114,32 @@ class EditorViewController: UIViewController {
         textView.textColor = UIColor(white: 0.8, alpha: 1.0)
         textView.inputAccessoryView = textToolbar
         viewPlaceholder.addSubview(textView)
-        
+
         let code = try! String.init(contentsOfFile: Bundle.main.path(forResource: source.filename, ofType: nil)!)
         self.textView.text = code
-        
-        self.highlighter = textStorage.highlightJS
-        self.textStorage.language = self.languageName.lowercased()
-        self.textStorage.highlightJS.setTheme(to: self.themeName.lowercased())
-        self.refreshTitle()
-        self.updateColors()
-        
+
+        highlighter = textStorage.highlightJS
+        textStorage.language = self.languageName.lowercased()
+        textStorage.highlightJS.setTheme(to: self.themeName.lowercased())
+        refreshTitle()
+        updateColors()
+
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "T", style: .done, target: self, action: #selector(pickTheme)),
             UIBarButtonItem(title: "L", style: .done, target: self, action: #selector(pickLanguage))
         ]
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
     }
-    
+
     func close() {
         dismiss(animated: true, completion: nil)
     }
-    
+
     func pickLanguage() {
         let languages = self.highlighter.supportedLanguages()
         let indexOrNil = languages.index(of: languageName.lowercased())
         let index = (indexOrNil == nil) ? 0 : indexOrNil!
-        
+
         ActionSheetStringPicker.show(withTitle: "Pick a Language",
                                      rows: languages,
                                      initialSelection: index,
@@ -164,29 +163,29 @@ class EditorViewController: UIViewController {
             }
             let end = Date()
             let time = Float(end.timeIntervalSince(start));
-            
+
             let avg = String(format:"%0.4f", time/100)
             let total = String(format:"%0.3f", time)
-            
+
             let alert = UIAlertController(title: "Performance test", message: "This code was highlighted 100 times. \n It took an average of \(avg) seconds to process each time,\n with a total of \(total) seconds", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
             alert.addAction(okAction)
-            
+
             DispatchQueue.main.async(execute: {
 //                self.activityIndicator.isHidden = true
 //                self.activityIndicator.stopAnimating()
                 self.present(alert, animated: true, completion: nil)
             })
         }
-        
+
     }
-    
+
     func pickTheme() {
         hideKeyboard(nil)
         let themes = self.highlighter.availableThemes()
         let indexOrNil = themes.index(of: themeName.lowercased())
         let index = (indexOrNil == nil) ? 0 : indexOrNil!
-        
+
         ActionSheetStringPicker.show(withTitle: "Pick a Theme",
                                      rows: themes,
                                      initialSelection: index,
@@ -198,15 +197,15 @@ class EditorViewController: UIViewController {
                 self.updateColors()
         }, cancel: nil, origin: self.navigationItem.rightBarButtonItem)
     }
-    
+
     @IBAction func hideKeyboard(_ sender: AnyObject?) {
         textView.resignFirstResponder()
     }
-    
+
     func updateColors() {
         self.textView.backgroundColor = self.highlighter.theme.themeBackgroundColor
     }
-    
+
     func invertColor(_ color: UIColor) -> UIColor {
         var r:CGFloat = 0, g:CGFloat = 0, b:CGFloat = 0
         color.getRed(&r, green: &g, blue: &b, alpha: nil)

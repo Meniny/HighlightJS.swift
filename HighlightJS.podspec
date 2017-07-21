@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "HighlightJS"
-  s.version          = "1.0.0"
+  s.version          = "1.1.0"
   s.summary          = "A code syntax highlight library using Highlight.js"
 
   s.homepage         = "https://github.com/Meniny/HighlightJS.swift"
@@ -13,7 +13,9 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.11'
   s.tvos.deployment_target = '9.0'
 
-  s.source_files = 'HighlightJS/Classes/**/*.swift'
+  s.ios.source_files = 'HighlightJS/Classes/**/*.swift', 'HighlightJS/iOS/**/*.swift'
+  s.osx.source_files = 'HighlightJS/Classes/**/*.swift'
+  s.tvos.source_files = 'HighlightJS/Classes/**/*.swift'
   s.resources = 'HighlightJS/Assets/**/*.*'
   # s.public_header_files = ''
   s.frameworks = 'Foundation', 'JavaScriptCore'
